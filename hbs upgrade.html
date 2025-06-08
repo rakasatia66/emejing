@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday Mr X 🎉</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;700&display=swap');
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: url('https://www.transparenttextures.com/patterns/flowers.png'), linear-gradient(135deg, #e61e61, #ffafbd);
+      background-blend-mode: multiply;
+      color: #2e2e2e;
+      overflow-x: hidden;
+    }
+    h1, h2, h3 {
+      font-family: 'Pacifico', cursive;
+      margin-bottom: 20px;
+      user-select: none;
+    }
+    .page {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100dvh;
+      padding: 40px 20px;
+      text-align: center;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(255 255 255 / 0.85);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      border-radius: 20px;
+      max-width: 600px;
+      margin: auto;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      pointer-events: none;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      transition: opacity 0.5s ease, transform 0.6s ease, clip-path 0.7s ease;
+      user-select: none;
+      z-index: 0;
+    }
+    .active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) scale(1);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      z-index: 2;
+      transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s, clip-path 0.7s ease 0.3s;
+    }
+    .page.exit {
+      clip-path: polygon(0 0, 80% 0, 100% 100%, 0 100%);
+      opacity: 0;
+      transform: translateX(calc(-50% - 100px)) scale(0.9);
+      transition: clip-path 0.5s ease, opacity 0.6s ease, transform 0.6s ease;
+      z-index: 1;
+    }
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+    .btn-cute {
+      background: #fff0f6;
+      color: #ff4081;
+      border: 2px dashed #ff69b4;
+      padding: 14px 24px;
+      font-size: 1.1em;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 2px 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease, background 0.3s ease;
+      user-select: none;
+      font-weight: 700;
+    }
+    .btn-cute:hover {
+      background: #ffe4ec;
+      transform: scale(1.05);
+    }
+    img {
+      width: 90%;
+      max-width: 400px;
+      border-radius: 16px;
+      margin: 10px auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      user-select: none;
+    }
+    audio {
+      display: none;
+    }
+    canvas#confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+    @media (max-width: 600px) {
+      .page {
+        max-width: 90vw;
+        padding: 20px 15px;
+        border-radius: 15px;
+      }
+      h1 { font-size: 1.8em; }
+      .btn-cute { font-size: 0.95em; padding: 12px 20px; }
+      img { max-width: 90vw; }
+    }
+    /* Popup cake style */
+    #popup-cake {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff0f6;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(255,105,180,0.4);
+      padding: 30px;
+      z-index: 10000;
+      text-align: center;
+      width: 300px;
+      max-width: 90vw;
+      user-select: none;
+    }
+    #popup-cake img {
+      width: 150px;
+      margin-bottom: 15px;
+      animation: popIn 0.6s ease;
+    }
+    #popup-cake h2 {
+      color: #ff4081;
+      font-family: 'Pacifico', cursive;
+      margin-bottom: 15px;
+    }
+    #popup-cake button {
+      margin-top: 15px;
+      padding: 10px 25px;
+      border: none;
+      background: #ff69b4;
+      color: white;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1em;
+      box-shadow: 0 4px 10px rgba(255,105,180,0.4);
+      transition: background 0.3s ease;
+    }
+    #popup-cake button:hover {
+      background: #ff4a92;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0;}
+      100% { transform: scale(1); opacity: 1;}
+    }
+  </style>
+</head>
+<body>
+  <canvas id="confetti-canvas"></canvas>
+  <audio autoplay loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_f5c83fb46b.mp3?filename=happy-birthday-to-you-10954.mp3" type="audio/mp3" />
+  </audio>
+
+  <div class="page active" id="page1">
+    <h1>Hola BRO! 🎉</h1>
+    <p> Is it your special day right ?, so let's start the journey!</p>
+    <div class="btn-container">
+      <button class="btn-cute" onclick="nextPage()">Next</button>
+    </div>
+  </div>
+
+  <div class="page" id="page2">
+    <h2>Selamat Ulang Tahun! 🎂</h2>
+    <p>Semoga semua impian kamu segera tercapai ya !</p>
+    <div class="btn-container">
+      <button class="btn-cute" onclick="prevPage()">Back</button>
+      <button class="btn-cute" onclick="nextPage()">Next</button>
+    </div>
+  </div>
+
+  <div class="page" id="page3">
+    <h2> Foto Eluwh 📸</h2>
+    <img src="https://via.placeholder.com/400x300.png?text=Foto+1" alt="Foto 1" />
+    <img src="https://via.placeholder.com/400x300.png?text=Foto+2" alt="Foto 2" />
+    <img src="https://via.placeholder.com/400x300.png?text=Foto+3" alt="Foto 3" />
+    <img src="https://via.placeholder.com/400x300.png?text=Foto+4" alt="Foto 4" />
+    <img src="https://via.placeholder.com/400x300.png?text=Foto+5" alt="Foto 5" />
+    <div class="btn-container">
+      <button class="btn-cute" onclick="prevPage()">Back</button>
+      <button class="btn-cute" onclick="nextPage()">Next</button>
+    </div>
+  </div>
+
+  <div class="page" id="page4">
+    <h2>Pesan ✉️</h2>
+    <p> Happy birthday BOCAH KOCAK! Gue cuma mau bilang, lu tuh literally one of the kindest souls ever. Makasih udah selalu jadi tempat cerita dan laugh bareng. Semoga tahun ini penuh kebahagiaan dan kejutan yang manis! Keep shining and stay awesome. Jangan lupa treat yourself hari ini!</p>
+    <div class="btn-container">
+      <button class="btn-cute" onclick="prevPage()">Back</button>
+      <button class="btn-cute" onclick="nextPage()">Next</button>
+    </div>
+  </div>
+
+  <div class="page" id="page5">
+    <h2>Surprise! 🎁</h2>
+    <p> barusan itu kado dari aku yaa 😂😅🤪!</p>
+    <div class="btn-container">
+      <button class="btn-cute" onclick="prevPage()">Back</button>
+      <!-- No next button on last page -->
+    </div>
+  </div>
+
+  <!-- Popup cake -->
+  <div id="popup-cake">
+    <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Birthday Gift" />
+    <h2>Happy Birthday! 🎂</h2>
+    <p>Semoga sehat selalu dan panjang umur ya!😉.</p>
+    <button onclick="closePopup()">Tutup</button>
+  </div>
+
+<script>
+  const pages = [...document.querySelectorAll('.page')];
+  let currentPageIndex = 0;
+
+  // Show page by index
+  function showPage(index) {
+    pages.forEach((p, i) => {
+      if(i === index) {
+        p.classList.add('active');
+        p.classList.remove('exit');
+      } else if(i < index) {
+        p.classList.remove('active');
+        p.classList.add('exit');
+      } else {
+        p.classList.remove('active');
+        p.classList.remove('exit');
+      }
+    });
+    currentPageIndex = index;
+    handlePopup();
+  }
+
+  function nextPage() {
+    if(currentPageIndex < pages.length - 1) {
+      showPage(currentPageIndex + 1);
+    }
+  }
+  function prevPage() {
+    if(currentPageIndex > 0) {
+      showPage(currentPageIndex - 1);
+    }
+  }
+
+  // Popup cake handling
+  const popup = document.getElementById('popup-cake');
+
+  function handlePopup() {
+    // Show popup only on last page
+    if(currentPageIndex === pages.length - 1) {
+      popup.style.display = 'block';
+      startPopupConfetti();
+    } else {
+      popup.style.display = 'none';
+      stopPopupConfetti();
+    }
+  }
+
+  function closePopup() {
+    popup.style.display = 'none';
+    stopPopupConfetti();
+  }
+
+  // Confetti for the whole page
+  const confettiCanvas = document.getElementById('confetti-canvas');
+  const ctx = confettiCanvas.getContext('2d');
+
+  confettiCanvas.width = window.innerWidth;
+  confettiCanvas.height = window.innerHeight;
+
+  window.addEventListener('resize', () => {
+    confettiCanvas.width = window.innerWidth;
+    confettiCanvas.height = window.innerHeight;
+  });
+
+  const confettiCount = 150;
+  const confettiColors = ['#ff4081', '#ff69b4', '#ffb6c1', '#ffc0cb', '#ff1493'];
+  const confettiParticles = [];
+
+  class ConfettiParticle {
+    constructor() {
+      this.x = Math.random() * confettiCanvas.width;
+      this.y = Math.random() * confettiCanvas.height;
+      this.size = 8 + Math.random() * 7;
+      this.speed = 1 + Math.random() * 3;
+      this.angle = Math.random() * 2 * Math.PI;
+      this.color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+      this.tilt = Math.random() * 10;
+      this.tiltSpeed = 0.1 + Math.random() * 0.3;
+    }
+    update() {
+      this.y += this.speed;
+      this.tilt += this.tiltSpeed;
+      if(this.y > confettiCanvas.height) {
+        this.x = Math.random() * confettiCanvas.width;
+        this.y = -this.size;
+      }
+    }
+    draw(ctx) {
+      ctx.beginPath();
+      ctx.lineWidth = this.size / 2;
+      ctx.strokeStyle = this.color;
+      ctx.moveTo(this.x + this.tilt, this.y);
+      ctx.lineTo(this.x + this.tilt + this.size / 2, this.y + this.size / 2);
+      ctx.stroke();
+    }
+  }
+
+  for(let i=0; i < confettiCount; i++) {
+    confettiParticles.push(new ConfettiParticle());
+  }
+
+  function confettiLoop() {
+    ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+    confettiParticles.forEach(p => {
+      p.update();
+      p.draw(ctx);
+    });
+    requestAnimationFrame(confettiLoop);
+  }
+
+  confettiLoop();
+
+  // Popup cake confetti (small bursts)
+  let popupConfettiInterval;
+  function startPopupConfetti() {
+    if(popupConfettiInterval) return;
+    popupConfettiInterval = setInterval(() => {
+      const burstCount = 15;
+      const burstCanvas = document.createElement('canvas');
+      burstCanvas.width = 300;
+      burstCanvas.height = 200;
+      burstCanvas.style.position = 'fixed';
+      burstCanvas.style.left = '50%';
+      burstCanvas.style.top = '50%';
+      burstCanvas.style.transform = 'translate(-50%, -50%)';
+      burstCanvas.style.pointerEvents = 'none';
+      burstCanvas.style.zIndex = 10001;
+      document.body.appendChild(burstCanvas);
+
+      const burstCtx = burstCanvas.getContext('2d');
+      let particles = [];
+      for(let i = 0; i < burstCount; i++) {
+        particles.push({
+          x: 150,
+          y: 100,
+          size: 4 + Math.random() * 4,
+          speedX: (Math.random() - 0.5) * 6,
+          speedY: (Math.random() - 0.5) * 6,
+          color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
+          life: 30 + Math.random() * 30,
+        });
+      }
+
+      let life = 0;
+      function burstAnim() {
+        burstCtx.clearRect(0, 0, burstCanvas.width, burstCanvas.height);
+        particles.forEach(p => {
+          p.x += p.speedX;
+          p.y += p.speedY;
+          p.life--;
+          burstCtx.fillStyle = p.color;
+          burstCtx.beginPath();
+          burstCtx.ellipse(p.x, p.y, p.size / 2, p.size / 2, 0, 0, Math.PI * 2);
+          burstCtx.fill();
+        });
+        particles = particles.filter(p => p.life > 0);
+        life++;
+        if(life < 40) {
+          requestAnimationFrame(burstAnim);
+        } else {
+          document.body.removeChild(burstCanvas);
+        }
+      }
+      burstAnim();
+    }, 1200);
+  }
+  function stopPopupConfetti() {
+    clearInterval(popupConfettiInterval);
+    popupConfettiInterval = null;
+  }
+</script>
+</body>
+</html>
